@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nova AI Chat</title>
+    <meta name="description" content="A modern AI chat experience built with HTML, CSS, and vanilla JavaScript" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="brand">
+            <img src="icons/logo.svg" alt="Nova AI" />
+            <div>
+              <h1>Nova AI</h1>
+              <p>Creative assistant</p>
+            </div>
+          </div>
+          <button id="mobileMenuBtn" class="icon-btn mobile-only" aria-label="Toggle sidebar">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+
+        <button id="newChatBtn" class="primary-btn">+ New chat</button>
+
+        <label class="search-box" for="historySearch">
+          <span>🔍</span>
+          <input id="historySearch" type="search" placeholder="Search chats" />
+        </label>
+
+        <div class="chat-list-wrapper">
+          <ul id="chatList" class="chat-list"></ul>
+        </div>
+
+        <div class="sidebar-footer">
+          <button id="importBtn" class="ghost-btn">Import</button>
+          <button id="settingsBtn" class="ghost-btn">Settings</button>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">AI workspace</p>
+            <h2 id="chatTitle">Welcome</h2>
+          </div>
+          <div class="topbar-actions">
+            <button id="themeToggle" class="icon-btn" aria-label="Toggle theme">🌙</button>
+            <button id="exportBtn" class="icon-btn" aria-label="Export chat">⤓</button>
+          </div>
+        </header>
+
+        <section id="messages" class="messages" aria-live="polite"></section>
+
+        <section class="composer-panel">
+          <div id="typingIndicator" class="typing-indicator hidden" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <form id="composerForm" class="composer">
+            <label class="sr-only" for="messageInput">Message input</label>
+            <textarea id="messageInput" rows="1" placeholder="Message Nova AI..."></textarea>
+            <div class="composer-actions">
+              <button id="stopBtn" type="button" class="icon-btn danger hidden">■</button>
+              <button id="sendBtn" type="submit" class="send-btn">Send</button>
+            </div>
+          </form>
+          <p class="composer-hint">Press Enter to send • Shift + Enter for a new line</p>
+        </section>
+      </main>
+    </div>
+
+    <div id="toastContainer" class="toast-container" aria-live="assertive"></div>
+
+    <div id="settingsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="settingsTitle">Settings</h3>
+          <button id="closeSettingsBtn" class="icon-btn" aria-label="Close settings">✕</button>
+        </div>
+        <form id="settingsForm" class="settings-form">
+          <label>
+            API Key
+            <input id="apiKeyInput" type="password" placeholder="sk-..." />
+          </label>
+          <label>
+            Base URL
+            <input id="baseUrlInput" type="text" placeholder="https://api.openai.com/v1/chat/completions" />
+          </label>
+          <label>
+            Model
+            <input id="modelInput" type="text" placeholder="gpt-4o-mini" />
+          </label>
+          <div class="modal-actions">
+            <button type="button" id="cancelSettingsBtn" class="ghost-btn">Cancel</button>
+            <button type="submit" class="primary-btn">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <input id="importFileInput" class="sr-only" type="file" accept=".json" />
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
