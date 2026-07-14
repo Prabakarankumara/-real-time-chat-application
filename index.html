@@ -6,6 +6,13 @@
     <title>Nova AI Chat</title>
     <meta name="description" content="A modern AI chat experience built with HTML, CSS, and vanilla JavaScript" />
     <link rel="stylesheet" href="style.css" />
+    <script>
+      window.ENV = {
+        VITE_API_KEY: '',
+        VITE_BASE_URL: 'https://api.openai.com/v1/chat/completions',
+        VITE_MODEL: 'gpt-4o-mini'
+      };
+    </script>
   </head>
   <body>
     <div class="app-shell">

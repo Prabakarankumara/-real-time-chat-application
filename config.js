@@ -4,12 +4,27 @@ const DEFAULT_CONFIG = {
   model: 'gpt-4o-mini'
 };
 
+// Get environment variables from window (injected by Vercel)
+const getEnvVar = (name) => {
+  if (typeof window !== 'undefined' && window.ENV) {
+    return window.ENV[name] || '';
+  }
+  return '';
+};
+
+const ENV_DEFAULTS = {
+  apiKey: getEnvVar('VITE_API_KEY') || '',
+  baseUrl: getEnvVar('VITE_BASE_URL') || 'https://api.openai.com/v1/chat/completions',
+  model: getEnvVar('VITE_MODEL') || 'gpt-4o-mini'
+};
+
 export function getConfig() {
   try {
     const saved = localStorage.getItem('nova-config');
-    return saved ? { ...DEFAULT_CONFIG, ...JSON.parse(saved) } : { ...DEFAULT_CONFIG };
+    const baseConfig = { ...DEFAULT_CONFIG, ...ENV_DEFAULTS };
+    return saved ? { ...baseConfig, ...JSON.parse(saved) } : { ...baseConfig };
   } catch {
-    return { ...DEFAULT_CONFIG };
+    return { ...DEFAULT_CONFIG, ...ENV_DEFAULTS };
   }
 }
 
