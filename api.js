@@ -86,41 +86,30 @@ export async function sendMessageToAI(messages, onChunk, onDone, onError, signal
   }
 
   try {
-    const requestUrl = buildRequestUrl(config.baseUrl, config);
-    let requestBody;
-
-    if (provider === 'gemini') {
-      requestBody = {
-        contents: (messages || []).map((message) => ({
-          role: message.role === 'assistant' ? 'model' : 'user',
-          parts: [{ text: message.content || '' }]
-        }))
-      };
-    } else {
-      requestBody = {
-        model: config.model,
-        messages,
-        stream: true,
-        temperature: 0.7
-      };
-    }
-
-    const response = await fetch(requestUrl, {
+    // Use Vercel serverless function to avoid CORS
+    const apiUrl = '/api/chat';
+    
+    const response = await fetch(apiUrl, {
       method: 'POST',
-      headers: getApiHeaders(config),
-      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        messages,
+        apiKey: config.apiKey,
+        baseUrl: config.baseUrl,
+        model: config.model
+      }),
       signal
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText || 'The request could not be completed.');
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || 'The request could not be completed.');
     }
 
-    const contentType = response.headers.get('content-type') || '';
-    const isStreamingResponse = contentType.includes('text/event-stream') || provider !== 'gemini';
-
-    if (isStreamingResponse && response.body) {
+    // Handle streaming response
+    if (response.body) {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let fullText = '';

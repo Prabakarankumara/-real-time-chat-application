@@ -1,0 +1,9 @@
+{
+  "name": "real-time-chat-application",
+  "version": "1.0.0",
+  "description": "Nova AI Chat - A modern AI chat experience",
+  "dependencies": {},
+  "keywords": ["ai", "chat", "openai", "vercel"],
+  "author": "",
+  "license": "MIT"
+}
